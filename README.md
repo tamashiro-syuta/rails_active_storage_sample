@@ -1,24 +1,29 @@
-# README
+# ActiveStorage の仕組み
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 他の画像アップロード系のgemとの違い
+- 一般的なgem --> 対象のモデルにカラムを生やす
+- ActiveStorage --> ポリモーフィック関連を選択（どのモデルに紐づけられた画像もAttachmentとBlobを利用）
 
-Things you may want to cover:
+## ActiveStorage::Blob
+- アップロードファイルのメタ情報を管理するモデル
 
-* Ruby version
+## ActiveStorage::Attachment
+- ActiveStorage::Blobと対象モデルとの中間テーブル
 
-* System dependencies
+## ER図
+```mermaid
 
-* Configuration
+erDiagram
+  TargetModel1 ||--o{ ActiveStorage_Attachment : "1対多"
+  TargetModel2  ||--o{ ActiveStorage_Attachment: "1対多"
+  ActiveStorage_Blob ||--o{ ActiveStorage_Attachment: "1対多"
 
-* Database creation
+```
 
-* Database initialization
+## モデル
+対象モデルに `has_one_attached :カラム名` と記述 --> ActiveStorage::Blobと1対1で関連つける
+※複数の画像を紐付けたい時は、`has_many_attached: カラム名(複数形)` とする
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## コマンド
+### rails active_storage:install
+- ActiveStorageのBlobテーブルとAttachmentテーブルとのモデル用のマイグレーションファイルを生成
