@@ -7,6 +7,7 @@
 
 <p>
   <strong>Portrait:</strong>
+  <%# サムネイル用に画像を編集して表示 %>
   <%= image_tag @user.portrait.variant(resize_to_limit: [100, 100]) %>
 </p>
 
