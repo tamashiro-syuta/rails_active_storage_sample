@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2022_12_18_062446) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  # sccafoldでportraitのカラムが別テーブルに追加されていることがわかる
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
